@@ -43,14 +43,21 @@ class LIS3MDL:
         print('test')
         self.i2c_bus = SMBus(1)
         self.logger = logging.getLogger()
-        self.find_i2c_address()
-        self.set_default_settings()
+        self.address = None
+        if not self.find_i2c_address():
+            self.logger.error("Could not connect to LIS3MDL!")
+        else:
+            self.set_default_settings()
 
     def find_i2c_address(self):
         for address in self.possible_i2c_addresses:
-            if self.i2c_bus.read_byte_data(address, self.WHO_AM_I) == self.WHO_ID:
-                self.address = address
-                return True
+            try:
+                if self.i2c_bus.read_byte_data(address, self.WHO_AM_I) == self.WHO_ID:
+                    self.address = address
+                    self.logger.debug("Found LIS3MDL at "+str(self.address))
+                    return True
+            except IOError:
+                self.logger.debug("LIS3MDL not found at "+str(address))
         return False
 
     def write_data(self, register, data):
