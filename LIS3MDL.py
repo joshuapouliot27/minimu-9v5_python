@@ -51,6 +51,7 @@ class LIS3MDL:
 
     def find_i2c_address(self):
         for address in self.possible_i2c_addresses:
+            self.logger.debug("Trying address: " + str(address))
             try:
                 if self.i2c_bus.read_byte_data(address, self.WHO_AM_I) == self.WHO_ID:
                     self.address = address
