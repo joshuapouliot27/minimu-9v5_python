@@ -56,7 +56,7 @@ class LIS3MDL:
                     self.address = address
                     self.logger.debug("Found LIS3MDL at "+str(self.address))
                     return True
-            except IOError:
+            except:
                 self.logger.debug("LIS3MDL not found at "+str(address))
         return False
 

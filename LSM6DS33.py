@@ -100,7 +100,7 @@ class LSM6DS33:
                     self.address = address
                     self.logger.debug("Found LSM6DS33 at "+str(self.address))
                     return True
-            except IOError:
+            except:
                 self.logger.debug("LSM6DS33 not found at "+str(address))
         return False
 
