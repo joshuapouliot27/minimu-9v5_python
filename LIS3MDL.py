@@ -7,7 +7,7 @@ from vectors import Vector
 
 
 class LIS3MDL:
-    possible_i2c_addresses = [0x6b]
+    possible_i2c_addresses = [0x1e]
 
     # IDs
     WHO_AM_I = 0x0F

@@ -7,7 +7,7 @@ from vectors import Vector
 
 
 class LSM6DS33:
-    possible_i2c_addresses = [0x1e]
+    possible_i2c_addresses = [0x6b]
 
     # IDs
     FUNC_CFG_ACCESS = 0x01
