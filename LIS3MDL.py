@@ -40,7 +40,6 @@ class LIS3MDL:
     FOUR_GAUSS_SCALE_MODE = 0x00
 
     def __init__(self):
-        print('test')
         self.i2c_bus = SMBus(1)
         self.logger = logging.getLogger()
         self.address = None

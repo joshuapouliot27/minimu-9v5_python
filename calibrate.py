@@ -46,7 +46,7 @@ magn_min = magnetometer(9999999, 9999999, 9999999)
 magn_max = magnetometer(0, 0, 0)
 ellipsoid_coeff = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 imu_data = imu_data(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
-logging.basicConfig(filename="log.log", level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 lsm6ds33 = LSM6DS33()
 lis3mdl = LIS3MDL()
@@ -110,7 +110,7 @@ def check_ellipse_data():
     return True
 
 
-def do_min_mac_config():
+def do_min_max_config():
     global gyro_max, gyro_min, accel_max, accel_min, magn_max, magn_min
     print("Move the IMU in each directiontoget min & max values, then press stosave the values")
 
@@ -151,6 +151,5 @@ def do_min_mac_config():
             magn_min.x + "to" + magn_max.x + "\t" + magn_min.y + "to" + magn_max.y + "\t" + magn_min.z + "to" + magn_max.z + "\t")
         time.sleep(1 / poll_rate)
 
-def do_ellipsoid_calibration():
-    global ellipsoid_coeff
-
+logger.debug("Starting min/max calibration!")
+do_min_max_config()

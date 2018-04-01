@@ -84,7 +84,6 @@ class LSM6DS33:
     HIGH_PERFORMANCE_MODE = 0x80
 
     def __init__(self):
-        print('test')
         self.i2c_bus = SMBus(1)
         self.logger = logging.getLogger()
         self.address = None
