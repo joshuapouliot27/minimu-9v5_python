@@ -45,11 +45,11 @@ accel_max = accelerometer(0, 0, 0)
 magn_min = magnetometer(9999999, 9999999, 9999999)
 magn_max = magnetometer(0, 0, 0)
 ellipsoid_coeff = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-lsm6ds33 = LSM6DS33()
-lis3mdl = LIS3MDL()
 imu_data = imu_data(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
 logging.basicConfig(filename="log.log", level=logging.DEBUG)
 logger = logging.getLogger()
+lsm6ds33 = LSM6DS33()
+lis3mdl = LIS3MDL()
 poll_rate = 10  # type: int
 
 
