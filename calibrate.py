@@ -171,7 +171,7 @@ def test(stdscr):
     stdscr.nodelay(True)
     while 1:
         key = stdscr.getch()
-        #logger.debug("Key Pressed: " + str(key))
+        logger.debug("Key Pressed: " + str(key))
         if key == 115:
             break
         #logger.debug("Polling IMU")
@@ -185,8 +185,8 @@ def test(stdscr):
 #            "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
 #        )
 
-        logger.debug(
-            "\n" + "Magnetometer: " + str(imu_data.magnetometer.x) + ", " + str(imu_data.magnetometer.y) + ", " + str(imu_data.magnetometer.z) + "\n" +
+        logger.debug( "\n" +
+            "Magnetometer: " + str(imu_data.magnetometer.x) + ", " + str(imu_data.magnetometer.y) + ", " + str(imu_data.magnetometer.z) + "\n" +
             "Gyroscope: " + str(imu_data.gyroscope.x) + ", " + str(imu_data.gyroscope.y) + ", " + str(imu_data.gyroscope.z) + "\n" +
             "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
         )
