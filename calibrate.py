@@ -96,7 +96,7 @@ async def test():
     screen.clear()
     print("Calibrate the IMU, press sny key when done.")
     screen.nodelay(False)
-    await fuse.calibrate(screen.getch())
+    await fuse.calibrate(lambda: screen.getch() is not None)
     screen.nodelay(True)
     curses.endwin()
     await fuse.start()
