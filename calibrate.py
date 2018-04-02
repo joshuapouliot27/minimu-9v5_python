@@ -197,11 +197,11 @@ def test(screen):
         #            "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
         #        )
 
-        screen.addstr(0, 0, "Magnetometer: " + str(imu_data.magnetometer.x) + ",\t" + str(
+        screen.addstr(0, 0, "Magnetometer: \t" + str(imu_data.magnetometer.x) + ",\t" + str(
             imu_data.magnetometer.y) + ",\t" + str(imu_data.magnetometer.z))
-        screen.addstr(1, 0, "Gyroscope: " + str(imu_data.gyroscope.x) + ",\t" + str(imu_data.gyroscope.y) + ",\t" + str(
+        screen.addstr(1, 0, "Gyroscope: \t" + str(imu_data.gyroscope.x) + ",\t" + str(imu_data.gyroscope.y) + ",\t" + str(
             imu_data.gyroscope.z))
-        screen.addstr(2, 0, "Accelerometer: " + str(imu_data.accelerometer.x) + ",\t" + str(
+        screen.addstr(2, 0, "Accelerometer: \t" + str(imu_data.accelerometer.x) + ",\t" + str(
             imu_data.accelerometer.y) + ",\t" + str(imu_data.accelerometer.z))
 
         time.sleep(1 / poll_rate)
