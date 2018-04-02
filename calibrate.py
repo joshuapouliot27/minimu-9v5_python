@@ -93,7 +93,7 @@ async def display(screen):
         await asyncio.sleep(500 / 1000)
 
 async def test(screen):
-    screen.cleat()
+    screen.clear()
     screen.addsrc(0,0,"Calibrate the IMU, press sny key when done.")
     screen.nodelay(False)
     await fuse.calibrate(lambda: isdone)
