@@ -89,6 +89,7 @@ async def display():
     fs = 'Heading: {:4.0f} Pitch: {:4.0f} Roll: {:4.0f}'
     while True:
         print(fs.format(fuse.heading, fuse.pitch, fuse.roll))
+        os.system("clear")
         await asyncio.sleep(500 / 1000)
 
 async def test():
