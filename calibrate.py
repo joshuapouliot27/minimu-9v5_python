@@ -95,7 +95,7 @@ async def display():
 async def test():
     screen = curses.initscr()
     screen.clear()
-    print("Calibrate the IMU, press sny key when done.")
+    screen.addstr(0,0,"Calibrate the IMU, press sny key when done.")
     screen.nodelay(False)
     await fuse.calibrate(lambda: screen.getch() is not None)
     screen.nodelay(True)
