@@ -146,17 +146,23 @@ def do_min_max_config():
             accel_max.y = imu_data.accelerometer.y
         if imu_data.accelerometer.z > accel_max.z:
             accel_max.z = imu_data.accelerometer.z
+
+        if platform.system() == "Windows":
+            os.system("cls")
+        elif platform.system() is "Linux" or platform.system() is "Darwin":
+            os.system("clear")
+
         print(
-            gyro_min.x + "to" + gyro_max.x + "\t" + gyro_min.y + "to" + gyro_max.y + "\t" + gyro_min.z + "to" + gyro_max.z + "\t" +
-            accel_min.x + "to" + accel_max.x + "\t" + accel_min.y + "to" + accel_max.y + "\t" + accel_min.z + "to" + accel_max.z + "\t" +
-            magn_min.x + "to" + magn_max.x + "\t" + magn_min.y + "to" + magn_max.y + "\t" + magn_min.z + "to" + magn_max.z + "\t")
+            gyro_min.x + "to" + gyro_max.x + "\t" + gyro_min.y + "to" + gyro_max.y + "\t" + gyro_min.z + "to" + gyro_max.z + "\n" +
+            accel_min.x + "to" + accel_max.x + "\t" + accel_min.y + "to" + accel_max.y + "\t" + accel_min.z + "to" + accel_max.z + "\n" +
+            magn_min.x + "to" + magn_max.x + "\t" + magn_min.y + "to" + magn_max.y + "\t" + magn_min.z + "to" + magn_max.z + "\n")
         time.sleep(1 / poll_rate)
 
 #logger.debug("Starting min/max calibration!")
 #do_min_max_config()
 
 stdscr = curses.initscr()
-while (1):
+while 1:
     key = stdscr.getch()
     if key == int('s'):
         break
