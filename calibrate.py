@@ -172,7 +172,7 @@ def test(stdscr):
         logger.debug("Key Pressed: " + str(key))
         if key == 115:
             break
-
+        logger.debug("Polling IMU")
         poll_imu()
 
         if platform.system() == "Windows":
