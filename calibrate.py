@@ -181,15 +181,15 @@ def test(stdscr):
             os.system("clear")
 
         print(
-            "Magnetometer: " + imu_data_obj.magnetometer.x + ", " + imu_data_obj.magnetometer.y + ", " + imu_data_obj.magnetometer.z + "\n" +
-            "Gyroscope: " + imu_data_obj.gyroscope.x + ", " + imu_data_obj.gyroscope.y + ", " + imu_data_obj.gyroscope.z + "\n" +
-            "Accelerometer: " + imu_data_obj.accelerometer.x + ", " + imu_data_obj.accelerometer.y + ", " + imu_data_obj.accelerometer.z
+            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n" +
+            "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n" +
+            "Accelerometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
         )
 
         logger.debug(
-            "Magnetometer: " + imu_data_obj.magnetometer.x + ", " + imu_data_obj.magnetometer.y + ", " + imu_data_obj.magnetometer.z + "\n" +
-            "Gyroscope: " + imu_data_obj.gyroscope.x + ", " + imu_data_obj.gyroscope.y + ", " + imu_data_obj.gyroscope.z + "\n" +
-            "Accelerometer: " + imu_data_obj.accelerometer.x + ", " + imu_data_obj.accelerometer.y + ", " + imu_data_obj.accelerometer.z
+            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n" +
+            "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n" +
+            "Accelerometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
         )
 
         time.sleep(1 / poll_rate)
