@@ -45,11 +45,9 @@ file_handler = logging.FileHandler("log.log")
 file_handler.setFormatter(log_formatter)
 root_logger.addHandler(file_handler)
 
-stdscr = curses.initscr()
-console_handler = logging.StreamHandler(stdscr)
+console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setFormatter(log_formatter)
 root_logger.addHandler(console_handler)
-
 
 config_file = "calibration_data.json"
 octave_script_dir = "./octave_scripts"
@@ -168,41 +166,46 @@ def do_min_max_config():
             os.system("clear")
 
         print(
-            "Gyroscope: " + str(gyro_min.x) + "to" + str(gyro_max.x) + "\t" + str(gyro_min.y) + "to" + str(gyro_max.y) + "\t" + str(gyro_min.z) + "to" + str(gyro_max.z) + "\n" +
-            "Accelerometer: " + str(accel_min.x) + "to" + str(accel_max.x) + "\t" + str(accel_min.y) + "to" + str(accel_max.y) + "\t" + str(accel_min.z) + "to" + str(accel_max.z) + "\n" +
-            "Magnetometer: " + str(magn_min.x) + "to" + str(magn_max.x) + "\t" + str(magn_min.y) + "to" + str(magn_max.y) + "\t" + str(magn_min.z) + "to" + str(magn_max.z) + "\n")
+            "Gyroscope: " + str(gyro_min.x) + "to" + str(gyro_max.x) + "\t" + str(gyro_min.y) + "to" + str(
+                gyro_max.y) + "\t" + str(gyro_min.z) + "to" + str(gyro_max.z) + "\n" +
+            "Accelerometer: " + str(accel_min.x) + "to" + str(accel_max.x) + "\t" + str(accel_min.y) + "to" + str(
+                accel_max.y) + "\t" + str(accel_min.z) + "to" + str(accel_max.z) + "\n" +
+            "Magnetometer: " + str(magn_min.x) + "to" + str(magn_max.x) + "\t" + str(magn_min.y) + "to" + str(
+                magn_max.y) + "\t" + str(magn_min.z) + "to" + str(magn_max.z) + "\n")
         time.sleep(1 / poll_rate)
 
 
 # logger.debug("Starting min/max calibration!")
 # do_min_max_config()
-def test(stdscr):
-    #logger.debug("Starting test loop")
-    #curses.cbreak()
-    stdscr.nodelay(True)
+def test(screen):
+    # logger.debug("Starting test loop")
+    # curses.cbreak()
+    screen.nodelay(True)
     while 1:
-        key = stdscr.getch()
+        key = screen.getch()
         root_logger.debug("Key Pressed: " + str(key))
         if key == 115:
+            curses.endwin()
             break
-        #logger.debug("Polling IMU")
         poll_imu()
 
-        os.system("clear")
+        screen.clear()
 
-#        print(
-#            "Magnetometer: " + str(imu_data.magnetometer.x) + ", " + str(imu_data.magnetometer.y) + ", " + str(imu_data.magnetometer.z) + "\n"
-#            "Gyroscope: " + str(imu_data.gyroscope.x) + ", " + str(imu_data.gyroscope.y) + ", " + str(imu_data.gyroscope.z) + "\n"
-#            "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
-#        )
+        #        print(
+        #            "Magnetometer: " + str(imu_data.magnetometer.x) + ", " + str(imu_data.magnetometer.y) + ", " + str(imu_data.magnetometer.z) + "\n"
+        #            "Gyroscope: " + str(imu_data.gyroscope.x) + ", " + str(imu_data.gyroscope.y) + ", " + str(imu_data.gyroscope.z) + "\n"
+        #            "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
+        #        )
 
-        root_logger.debug("Magnetometer: " + str(imu_data.magnetometer.x) + ",\t" + str(imu_data.magnetometer.y) + ",\t" + str(imu_data.magnetometer.z))
-        root_logger.debug("Gyroscope: " + str(imu_data.gyroscope.x) + ",\t" + str(imu_data.gyroscope.y) + ",\t" + str(imu_data.gyroscope.z))
-        root_logger.debug("Accelerometer: " + str(imu_data.accelerometer.x) + ",\t" + str(imu_data.accelerometer.y) + ",\t" + str(imu_data.accelerometer.z))
-
+        screen.addstr(0, 0, "Magnetometer: " + str(imu_data.magnetometer.x) + ",\t" + str(
+            imu_data.magnetometer.y) + ",\t" + str(imu_data.magnetometer.z))
+        screen.addstr(1, 0, "Gyroscope: " + str(imu_data.gyroscope.x) + ",\t" + str(imu_data.gyroscope.y) + ",\t" + str(
+            imu_data.gyroscope.z))
+        screen.addstr(2, 0, "Accelerometer: " + str(imu_data.accelerometer.x) + ",\t" + str(
+            imu_data.accelerometer.y) + ",\t" + str(imu_data.accelerometer.z))
 
         time.sleep(1 / poll_rate)
 
 
-#curses.wrapper(test)
-test(curses.initscr())
+curses.wrapper(test)
+# test(curses.initscr())
