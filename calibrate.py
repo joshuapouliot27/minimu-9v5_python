@@ -51,7 +51,7 @@ logging.basicConfig(filename="log.log", level=logging.DEBUG)
 logger = logging.getLogger()
 lsm6ds33 = LSM6DS33()
 lis3mdl = LIS3MDL()
-poll_rate = 10  # type: int
+poll_rate = .5  # type: int
 
 
 def poll_imu():
@@ -164,15 +164,15 @@ def do_min_max_config():
 # logger.debug("Starting min/max calibration!")
 # do_min_max_config()
 def test(stdscr):
-    logger.debug("Starting test loop")
+    #logger.debug("Starting test loop")
     curses.cbreak()
     stdscr.nodelay(True)
     while 1:
         key = stdscr.getch()
-        logger.debug("Key Pressed: " + str(key))
+        #logger.debug("Key Pressed: " + str(key))
         if key == 115:
             break
-        logger.debug("Polling IMU")
+        #logger.debug("Polling IMU")
         poll_imu()
 
         if platform.system() == "Windows":
@@ -187,13 +187,12 @@ def test(stdscr):
         )
 
         logger.debug(
-            "Magnetometer: " + str(imu_data.magnetometer.x) + ", " + str(imu_data.magnetometer.y) + ", " + str(imu_data.magnetometer.z) + "\n" +
+            "\n" + "Magnetometer: " + str(imu_data.magnetometer.x) + ", " + str(imu_data.magnetometer.y) + ", " + str(imu_data.magnetometer.z) + "\n" +
             "Gyroscope: " + str(imu_data.gyroscope.x) + ", " + str(imu_data.gyroscope.y) + ", " + str(imu_data.gyroscope.z) + "\n" +
             "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
         )
 
         time.sleep(1 / poll_rate)
-        logger.debug("Looped!")
 
 
 curses.wrapper(test)
