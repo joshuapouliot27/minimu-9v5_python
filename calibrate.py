@@ -47,7 +47,7 @@ magn_min = magnetometer(9999999, 9999999, 9999999)
 magn_max = magnetometer(0, 0, 0)
 ellipsoid_coeff = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 imu_data = imu_data(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(filename="log.log", level=logging.DEBUG)
 logger = logging.getLogger()
 lsm6ds33 = LSM6DS33()
 lis3mdl = LIS3MDL()
@@ -169,6 +169,12 @@ while (1):
         os.system("clear")
 
     print(
+        "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n"
+        "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n"
+        "Accelrometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+    )
+
+    logger.debug(
         "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n"
         "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n"
         "Accelrometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
