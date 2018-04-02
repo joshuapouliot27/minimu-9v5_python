@@ -186,9 +186,9 @@ def test(stdscr):
 #        )
 
         logger.debug( "\n" +
-            "Magnetometer: " + str(imu_data.magnetometer.x) + ", " + str(imu_data.magnetometer.y) + ", " + str(imu_data.magnetometer.z) + "\n" +
-            "Gyroscope: " + str(imu_data.gyroscope.x) + ", " + str(imu_data.gyroscope.y) + ", " + str(imu_data.gyroscope.z) + "\n" +
-            "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
+            "Magnetometer: " + str(imu_data.magnetometer.x) + ",\t" + str(imu_data.magnetometer.y) + ",\t" + str(imu_data.magnetometer.z) + "\n" +
+            "Gyroscope: " + str(imu_data.gyroscope.x) + ",\t" + str(imu_data.gyroscope.y) + ",\t" + str(imu_data.gyroscope.z) + "\n" +
+            "Accelerometer: " + str(imu_data.accelerometer.x) + ",\t" + str(imu_data.accelerometer.y) + ",\t" + str(imu_data.accelerometer.z)
         )
 
         time.sleep(1 / poll_rate)
