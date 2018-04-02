@@ -29,7 +29,7 @@ class accelerometer:
         self.z = z
 
 
-class imu_data:
+class imu_data_obj:
     def __init__(self, magn, gyro, accel):
         self.magnetometer = magn
         self.gyroscope = gyro
@@ -46,7 +46,7 @@ accel_max = accelerometer(0, 0, 0)
 magn_min = magnetometer(9999999, 9999999, 9999999)
 magn_max = magnetometer(0, 0, 0)
 ellipsoid_coeff = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-imu_data = imu_data(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
+imu_data = imu_data_obj(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
 logging.basicConfig(filename="log.log", level=logging.DEBUG)
 logger = logging.getLogger()
 lsm6ds33 = LSM6DS33()
@@ -61,9 +61,9 @@ def poll_imu():
         gyro = lsm6ds33.get_gryoscope_data()
         accel = lsm6ds33.get_accelerometer_data()
         magn = lis3mdl.get_magnetometer_data()
-        imu_data = imu_data(magnetometer(magn.x, magn.y, magn.z),
-                            gyroscope(gyro.x, gyro.y, gyro.z),
-                            accelerometer(accel.x, accel.y, accel.z))
+        imu_data = imu_data_obj(magnetometer(magn.x, magn.y, magn.z),
+                                gyroscope(gyro.x, gyro.y, gyro.z),
+                                accelerometer(accel.x, accel.y, accel.z))
 
 
 def save_calibration():
@@ -181,18 +181,19 @@ def test(stdscr):
             os.system("clear")
 
         print(
-            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n" +
-            "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n" +
-            "Accelerometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+            "Magnetometer: " + imu_data_obj.magnetometer.x + ", " + imu_data_obj.magnetometer.y + ", " + imu_data_obj.magnetometer.z + "\n" +
+            "Gyroscope: " + imu_data_obj.gyroscope.x + ", " + imu_data_obj.gyroscope.y + ", " + imu_data_obj.gyroscope.z + "\n" +
+            "Accelerometer: " + imu_data_obj.accelerometer.x + ", " + imu_data_obj.accelerometer.y + ", " + imu_data_obj.accelerometer.z
         )
 
         logger.debug(
-            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n" +
-            "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n" +
-            "Accelerometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+            "Magnetometer: " + imu_data_obj.magnetometer.x + ", " + imu_data_obj.magnetometer.y + ", " + imu_data_obj.magnetometer.z + "\n" +
+            "Gyroscope: " + imu_data_obj.gyroscope.x + ", " + imu_data_obj.gyroscope.y + ", " + imu_data_obj.gyroscope.z + "\n" +
+            "Accelerometer: " + imu_data_obj.accelerometer.x + ", " + imu_data_obj.accelerometer.y + ", " + imu_data_obj.accelerometer.z
         )
 
         time.sleep(1 / poll_rate)
         logger.debug("Looped!")
+
 
 curses.wrapper(test)
