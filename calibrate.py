@@ -193,5 +193,6 @@ def test(stdscr):
         )
 
         time.sleep(1 / poll_rate)
+        logger.debug("Looped!")
 
 curses.wrapper(test)
