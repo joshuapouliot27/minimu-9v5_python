@@ -155,9 +155,9 @@ def do_min_max_config():
             os.system("clear")
 
         print(
-            gyro_min.x + "to" + gyro_max.x + "\t" + gyro_min.y + "to" + gyro_max.y + "\t" + gyro_min.z + "to" + gyro_max.z + "\n" +
-            accel_min.x + "to" + accel_max.x + "\t" + accel_min.y + "to" + accel_max.y + "\t" + accel_min.z + "to" + accel_max.z + "\n" +
-            magn_min.x + "to" + magn_max.x + "\t" + magn_min.y + "to" + magn_max.y + "\t" + magn_min.z + "to" + magn_max.z + "\n")
+            "Gyroscope: " + str(gyro_min.x) + "to" + str(gyro_max.x) + "\t" + str(gyro_min.y) + "to" + str(gyro_max.y) + "\t" + str(gyro_min.z) + "to" + str(gyro_max.z) + "\n" +
+            "Accelerometer: " + str(accel_min.x) + "to" + str(accel_max.x) + "\t" + str(accel_min.y) + "to" + str(accel_max.y) + "\t" + str(accel_min.z) + "to" + str(accel_max.z) + "\n" +
+            "Magnetometer: " + str(magn_min.x) + "to" + str(magn_max.x) + "\t" + str(magn_min.y) + "to" + str(magn_max.y) + "\t" + str(magn_min.z) + "to" + str(magn_max.z) + "\n")
         time.sleep(1 / poll_rate)
 
 
@@ -181,15 +181,15 @@ def test(stdscr):
             os.system("clear")
 
         print(
-            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n" +
-            "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n" +
-            "Accelerometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+            "Magnetometer: " + str(imu_data.magnetometer.x) + ", " + str(imu_data.magnetometer.y) + ", " + str(imu_data.magnetometer.z) + "\n" +
+            "Gyroscope: " + str(imu_data.gyroscope.x) + ", " + str(imu_data.gyroscope.y) + ", " + str(imu_data.gyroscope.z) + "\n" +
+            "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
         )
 
         logger.debug(
-            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n" +
-            "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n" +
-            "Accelerometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+            "Magnetometer: " + str(imu_data.magnetometer.x) + ", " + str(imu_data.magnetometer.y) + ", " + str(imu_data.magnetometer.z) + "\n" +
+            "Gyroscope: " + str(imu_data.gyroscope.x) + ", " + str(imu_data.gyroscope.y) + ", " + str(imu_data.gyroscope.z) + "\n" +
+            "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
         )
 
         time.sleep(1 / poll_rate)
