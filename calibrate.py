@@ -88,8 +88,8 @@ async def mem_manage():  # Necessary for long term stability
 async def display():
     fs = 'Heading: {:4.0f} Pitch: {:4.0f} Roll: {:4.0f}'
     while True:
-        print(fs.format(fuse.heading, fuse.pitch, fuse.roll))
         os.system("clear")
+        print(fs.format(fuse.heading, fuse.pitch, fuse.roll))
         await asyncio.sleep(500 / 1000)
 
 async def test():
