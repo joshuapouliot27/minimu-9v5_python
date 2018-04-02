@@ -110,6 +110,8 @@ fuse = Fusion(read_coro)
 
 
 def testt(screen):
+    screen.addstr(0,0,"Starting...")
+    time.sleep(1)
     loop = asyncio.get_event_loop()
     loop.create_task(mem_manage())
     loop.create_task(test(screen))
