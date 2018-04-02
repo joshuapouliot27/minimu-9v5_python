@@ -203,4 +203,5 @@ def test(stdscr):
         time.sleep(1 / poll_rate)
 
 
-curses.wrapper(test)
+#curses.wrapper(test)
+test(curses.initscr())
