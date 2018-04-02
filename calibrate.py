@@ -62,7 +62,7 @@ ellipsoid_coeff = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 imu_data = imu_data_obj(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
 lsm6ds33 = LSM6DS33()
 lis3mdl = LIS3MDL()
-poll_rate = .5  # type: int
+poll_rate = 25  # type: int
 
 
 def poll_imu():
