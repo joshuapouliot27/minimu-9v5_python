@@ -47,8 +47,9 @@ magn_min = magnetometer(9999999, 9999999, 9999999)
 magn_max = magnetometer(0, 0, 0)
 ellipsoid_coeff = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 imu_data = imu_data_obj(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
-#logging.basicConfig(filename="log.log", level=logging.DEBUG)
-logging.basicConfig(level=logging.DEBUG)
+logformat = "%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s"
+logging.basicConfig(filename="log.log", level=logging.DEBUG, format=logformat)
+logging.getLogger().addHandler(logging.StreamHandler())
 logger = logging.getLogger()
 lsm6ds33 = LSM6DS33()
 lis3mdl = LIS3MDL()
