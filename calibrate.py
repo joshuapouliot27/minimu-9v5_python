@@ -85,38 +85,38 @@ async def mem_manage():  # Necessary for long term stability
         gc.collect()
 
 
-async def display(screen):
+async def display():
     fs = 'Heading: {:4.0f} Pitch: {:4.0f} Roll: {:4.0f}'
     while True:
-        screen.clear()
-        screen.addsrc(0,0,fs.format(fuse.heading, fuse.pitch, fuse.roll))
+        print(fs.format(fuse.heading, fuse.pitch, fuse.roll))
         await asyncio.sleep(500 / 1000)
 
-async def test(screen):
+async def test():
+    screen = curses.initscr()
     screen.clear()
-    screen.addstr(0,0,"Calibrate the IMU, press sny key when done.")
+    print("Calibrate the IMU, press sny key when done.")
     screen.nodelay(False)
     isdone = False
     await fuse.calibrate(lambda: isdone)
     key = screen.getch()
     isdone = True
     screen.nodelay(True)
+    curses.endwin()
     await fuse.start()
     loop = asyncio.get_event_loop()
-    loop.create_task(display(screen))
+    loop.create_task(display())
 
 
 fuse = Fusion(read_coro)
 
 
-def testt(screen):
-    screen.addstr(0,0,"Starting...")
+def testt():
+    print("Starting...")
     time.sleep(1)
     loop = asyncio.get_event_loop()
     loop.create_task(mem_manage())
-    loop.create_task(test(screen))
+    loop.create_task(test())
     loop.run_forever()
 
 
-curses.wrapper(testt)
-# test(curses.initscr())
+testt()
