@@ -165,7 +165,7 @@ def do_min_max_config():
 # do_min_max_config()
 
 def test(stdscr):
-    logger.log("Starting test loop")
+    logger.debug("Starting test loop")
     curses.cbreak()
     while 1:
         key = stdscr.getch()
