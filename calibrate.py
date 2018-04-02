@@ -82,6 +82,7 @@ def save_calibration():
     with open(config_file, 'w') as file:
         json.dump(config, file)
 
+
 def check_min_max_data():
     if gyro_max.x <= gyro_min.x or gyro_max.x <= 0 or gyro_min.x >= 9999999:
         return False
@@ -101,6 +102,7 @@ def check_min_max_data():
         return False
     if accel_max.z <= accel_min.z or accel_max.z <= 0 or accel_min.z >= 9999999:
         return False
+
 
 def check_ellipse_data():
     if (ellipsoid_coeff[3] ** 2 >= 4 * ellipsoid_coeff[0] * ellipsoid_coeff[2]) \
@@ -158,33 +160,38 @@ def do_min_max_config():
             magn_min.x + "to" + magn_max.x + "\t" + magn_min.y + "to" + magn_max.y + "\t" + magn_min.z + "to" + magn_max.z + "\n")
         time.sleep(1 / poll_rate)
 
-#logger.debug("Starting min/max calibration!")
-#do_min_max_config()
 
-stdscr = curses.initscr()
-while 1:
-    key = stdscr.getch()
-    if key == int('s'):
-        break
+# logger.debug("Starting min/max calibration!")
+# do_min_max_config()
 
-    poll_imu()
+def test(stdscr):
+    logger.log("Starting test loop")
+    curses.cbreak()
+    while 1:
+        key = stdscr.getch()
+        logger.debug("Key Pressed: " + str(key))
+        if key == int('s'):
+            break
 
-    if platform.system() == "Windows":
-        os.system("cls")
-    elif platform.system() is "Linux" or platform.system() is "Darwin":
-        os.system("clear")
+        poll_imu()
 
-    print(
-        "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n"
-        "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n"
-        "Accelrometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
-    )
+        if platform.system() == "Windows":
+            os.system("cls")
+        elif platform.system() is "Linux" or platform.system() is "Darwin":
+            os.system("clear")
 
-    logger.debug(
-        "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n"
-        "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n"
-        "Accelrometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
-    )
+        print(
+            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n"
+                                                                                                                           "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n"
+                                                                                                                                                                                                                              "Accelrometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+        )
 
-    time.sleep(1/poll_rate)
+        logger.debug(
+            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n"
+                                                                                                                           "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n"
+                                                                                                                                                                                                                              "Accelrometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+        )
 
+        time.sleep(1 / poll_rate)
+
+curses.wrapper(test)
