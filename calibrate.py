@@ -1,5 +1,6 @@
 import curses
-import json, logging
+import json, logging, os
+import platform
 
 import time
 
@@ -151,5 +152,27 @@ def do_min_max_config():
             magn_min.x + "to" + magn_max.x + "\t" + magn_min.y + "to" + magn_max.y + "\t" + magn_min.z + "to" + magn_max.z + "\t")
         time.sleep(1 / poll_rate)
 
-logger.debug("Starting min/max calibration!")
-do_min_max_config()
+#logger.debug("Starting min/max calibration!")
+#do_min_max_config()
+
+stdscr = curses.initscr()
+while (1):
+    key = stdscr.getch()
+    if key == int('s'):
+        break
+
+    poll_imu()
+
+    if platform.system() == "Windows":
+        os.system("cls")
+    elif platform.system() is "Linux" or platform.system() is "Darwin":
+        os.system("clear")
+
+    print(
+        "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n"
+        "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n"
+        "Accelrometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+    )
+
+    time.sleep(1/poll_rate)
+
