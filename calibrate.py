@@ -36,16 +36,16 @@ class imu_data_obj:
         self.accelerometer = accel
 
 
-logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-rootLogger = logging.getLogger()
+log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+root_logger = logging.getLogger()
 
-fileHandler = logging.FileHandler("{0}/{1}.log".format("./", "log.log"))
-fileHandler.setFormatter(logFormatter)
-rootLogger.addHandler(fileHandler)
+file_handler = logging.FileHandler("{0}/{1}.log".format("./", "log.log"))
+file_handler.setFormatter(log_formatter)
+root_logger.addHandler(file_handler)
 
-consoleHandler = logging.StreamHandler()
-consoleHandler.setFormatter(logFormatter)
-rootLogger.addHandler(consoleHandler)
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(log_formatter)
+root_logger.addHandler(console_handler)
 
 
 config_file = "calibration_data.json"
@@ -179,7 +179,7 @@ def test(stdscr):
     stdscr.nodelay(True)
     while 1:
         key = stdscr.getch()
-        logger.debug("Key Pressed: " + str(key))
+        root_logger.debug("Key Pressed: " + str(key))
         if key == 115:
             break
         #logger.debug("Polling IMU")
@@ -193,11 +193,10 @@ def test(stdscr):
 #            "Accelerometer: " + str(imu_data.accelerometer.x) + ", " + str(imu_data.accelerometer.y) + ", " + str(imu_data.accelerometer.z)
 #        )
 
-        logger.debug( "\n" +
-            "Magnetometer: " + str(imu_data.magnetometer.x) + ",\t" + str(imu_data.magnetometer.y) + ",\t" + str(imu_data.magnetometer.z) + "\n" +
-            "Gyroscope: " + str(imu_data.gyroscope.x) + ",\t" + str(imu_data.gyroscope.y) + ",\t" + str(imu_data.gyroscope.z) + "\n" +
-            "Accelerometer: " + str(imu_data.accelerometer.x) + ",\t" + str(imu_data.accelerometer.y) + ",\t" + str(imu_data.accelerometer.z)
-        )
+        root_logger.debug("Magnetometer: " + str(imu_data.magnetometer.x) + ",\t" + str(imu_data.magnetometer.y) + ",\t" + str(imu_data.magnetometer.z))
+        root_logger.debug("Gyroscope: " + str(imu_data.gyroscope.x) + ",\t" + str(imu_data.gyroscope.y) + ",\t" + str(imu_data.gyroscope.z))
+        root_logger.debug("Accelerometer: " + str(imu_data.accelerometer.x) + ",\t" + str(imu_data.accelerometer.y) + ",\t" + str(imu_data.accelerometer.z))
+
 
         time.sleep(1 / poll_rate)
 
