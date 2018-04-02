@@ -122,7 +122,7 @@ def do_min_max_config():
 
     while 1:
         key = stdscr.getch()
-        if key == int('s') and check_min_max_data():
+        if key == 115 and check_min_max_data():
             save_calibration()
             print("min/max calibration saved")
             break
@@ -170,7 +170,7 @@ def test(stdscr):
     while 1:
         key = stdscr.getch()
         logger.debug("Key Pressed: " + str(key))
-        if key == int('s'):
+        if key == 115:
             break
 
         poll_imu()
@@ -181,15 +181,15 @@ def test(stdscr):
             os.system("clear")
 
         print(
-            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n"
-                                                                                                                           "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n"
-                                                                                                                                                                                                                              "Accelrometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n" +
+            "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n" +
+            "Accelerometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
         )
 
         logger.debug(
-            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n"
-                                                                                                                           "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n"
-                                                                                                                                                                                                                              "Accelrometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
+            "Magnetometer: " + imu_data.magnetometer.x + ", " + imu_data.magnetometer.y + ", " + imu_data.magnetometer.z + "\n" +
+            "Gyroscope: " + imu_data.gyroscope.x + ", " + imu_data.gyroscope.y + ", " + imu_data.gyroscope.z + "\n" +
+            "Accelerometer: " + imu_data.accelerometer.x + ", " + imu_data.accelerometer.y + ", " + imu_data.accelerometer.z
         )
 
         time.sleep(1 / poll_rate)
