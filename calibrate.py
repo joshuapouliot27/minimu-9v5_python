@@ -94,7 +94,7 @@ async def display(screen):
 
 async def test(screen):
     screen.clear()
-    screen.addsrc(0,0,"Calibrate the IMU, press sny key when done.")
+    screen.addstr(0,0,"Calibrate the IMU, press sny key when done.")
     screen.nodelay(False)
     await fuse.calibrate(lambda: isdone)
     isdone = False
