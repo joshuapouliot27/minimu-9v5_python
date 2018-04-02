@@ -109,12 +109,12 @@ async def test(screen):
 fuse = Fusion(read_coro)
 
 
-def test(screen):
+def testt(screen):
     loop = asyncio.get_event_loop()
     loop.create_task(mem_manage())
     loop.create_task(test(screen))
     loop.run_forever()
 
 
-curses.wrapper(test)
+curses.wrapper(testt)
 # test(curses.initscr())
