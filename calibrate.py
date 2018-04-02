@@ -69,7 +69,7 @@ def poll_imu():
     global imu_data
 
     if lsm6ds33 is not None and lis3mdl is not None:
-        gyro = lsm6ds33.get_gryoscope_data()
+        gyro = lsm6ds33.get_gyroscope_data()
         accel = lsm6ds33.get_accelerometer_data()
         magn = lis3mdl.get_magnetometer_data()
         imu_data = imu_data_obj(magnetometer(magn.x, magn.y, magn.z),

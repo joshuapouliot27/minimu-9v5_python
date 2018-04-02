@@ -102,6 +102,7 @@ class LSM6DS33:
                     return True
             except:
                 self.logger.debug("LSM6DS33 not found at "+str(address))
+        self.logger.debug("LSM6DS33 not found from any addresses!")
         return False
 
     def write_data(self, register, data):
@@ -129,7 +130,7 @@ class LSM6DS33:
             if not self.write_data(self.CTRL2_G, self.HIGH_PERFORMANCE_MODE):
                 self.logger.error("Could not set gyroscope to high performance mode!")
 
-    def get_gryoscope_data(self):
+    def get_gyroscope_data(self):
         vector = None
         gyro_x = Math.two_bytes_to_number(self.read_data(self.OUTX_H_G),
                                           self.read_data(self.OUTX_L_G))
