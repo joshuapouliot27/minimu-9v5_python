@@ -65,9 +65,9 @@ while True:
         magZmin = MAGz
 
     os.system("clear")
-    print("X: {:8} to {:8}".format(magXmin, magXmax))
-    print("Y: {:8} to {:8}".format(magYmin, magYmax))
-    print("Z: {:8} to {:8}".format(magZmin, magZmax))
+    print("X: {:5} to {:5}".format(magXmin, magXmax))
+    print("Y: {:5} to {:5}".format(magYmin, magYmax))
+    print("Z: {:5} to {:5}".format(magZmin, magZmax))
 
 
 
