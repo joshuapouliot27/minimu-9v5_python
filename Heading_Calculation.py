@@ -299,9 +299,9 @@ while True:
         tiltCompensatedHeading += 360
 
     os.system("clear")
-    print("Complementary filter angle X: {:8} \t Y: {:8},".format(float(CFangleX), float(CFangleY)))
-    print("Kalman angle               X: {:8} \t Y: {:8},".format(float(KFangleX), float(KFangleY)))
-    print("Tilt Compensated Heading: {:8}".format(float(tiltCompensatedHeading)))
+    print("Complementary filter angle X: {:8.6} \t Y: {:8.6},".format(float(CFangleX), float(CFangleY)))
+    print("Kalman angle               X: {:8.6} \t Y: {:8.6},".format(float(KFangleX), float(KFangleY)))
+    print("Tilt Compensated Heading: {:8.6}".format(float(tiltCompensatedHeading)))
     # slow program down a bit, makes the output more readable
     time.sleep(1/10)
 
