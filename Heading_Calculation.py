@@ -37,12 +37,12 @@ M_PI = 3.14159265358979323846
 G_GAIN = 0.00875  # [deg/s/LSB]  If you change the dps for gyro, you need to update this value accordingly
 AA = 0.40  # Complementary filter constant
 
-magXmax = 979
-magYmax = 1325
-magZmax = 1244
-magXmin = -1409
-magYmin = -1259
-magZmin = -1158
+magXmax = 4149
+magYmax = 1643
+magZmax = 8910
+magXmin = -2745
+magYmin = -4985
+magZmin = 2674
 
 # Kalman filter variables
 Q_angle = 0.02
@@ -299,9 +299,9 @@ while True:
         tiltCompensatedHeading += 360
 
     os.system("clear")
-    print("Complementary filter angle X: {:8.2} \t Y: {:8.2},".format(CFangleX, CFangleY))
-    print("Kalman angle               X: {:8.2} \t Y: {:8.2},".format(KFangleX, KFangleY))
-    print("Tilt Compensated Heading: {:8.2}".format(tiltCompensatedHeading))
+    print("Complementary filter angle X: {:8.2} \t Y: {:8.2},".format(float(CFangleX), float(CFangleY)))
+    print("Kalman angle               X: {:8.2} \t Y: {:8.2},".format(float(KFangleX), float(KFangleY)))
+    print("Tilt Compensated Heading: {:8.2}".format(float(tiltCompensatedHeading)))
     # slow program down a bit, makes the output more readable
     time.sleep(1/10)
 

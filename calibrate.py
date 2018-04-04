@@ -42,34 +42,39 @@ magZmin = 9999999
 magXmax = -9999999
 magYmax = -9999999
 magZmax = -9999999
-
-while True:
+try:
+    while True:
 
     # Read magnetometer values
-    MAGx = magnetometer.get_magnetometer_data().x
-    MAGy = magnetometer.get_magnetometer_data().y
-    MAGz = magnetometer.get_magnetometer_data().z
+        MAGx = magnetometer.get_magnetometer_data().x
+        MAGy = magnetometer.get_magnetometer_data().y
+        MAGz = magnetometer.get_magnetometer_data().z
 
-    if MAGx > magXmax:
-        magXmax = MAGx
-    if MAGy > magYmax:
-        magYmax = MAGy
-    if MAGz > magZmax:
-        magZmax = MAGz
+        if MAGx > magXmax:
+            magXmax = MAGx
+        if MAGy > magYmax:
+            magYmax = MAGy
+        if MAGz > magZmax:
+            magZmax = MAGz
 
-    if MAGx < magXmin:
-        magXmin = MAGx
-    if MAGy < magYmin:
-        magYmin = MAGy
-    if MAGz < magZmin:
-        magZmin = MAGz
+        if MAGx < magXmin:
+            magXmin = MAGx
+        if MAGy < magYmin:
+            magYmin = MAGy
+        if MAGz < magZmin:
+            magZmin = MAGz
 
+        os.system("clear")
+        print("X: {:5} to {:5}".format(magXmin, magXmax))
+        print("Y: {:5} to {:5}".format(magYmin, magYmax))
+        print("Z: {:5} to {:5}".format(magZmin, magZmax))
+
+
+
+        # slow program down a bit, makes the output more readable
+        time.sleep(1/10)
+except:
     os.system("clear")
     print("X: {:5} to {:5}".format(magXmin, magXmax))
     print("Y: {:5} to {:5}".format(magYmin, magYmax))
     print("Z: {:5} to {:5}".format(magZmin, magZmax))
-
-
-
-    # slow program down a bit, makes the output more readable
-    time.sleep(1/10)
