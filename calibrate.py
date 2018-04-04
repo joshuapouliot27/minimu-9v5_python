@@ -92,7 +92,7 @@ async def save_calibration(fuse):
 
 
 async def get_calibration():
-    with open(config_file, 'w') as file:
+    with open(config_file, 'r') as file:
         calibration = json.load(file)
         mag_cal = (
             calibration["x"],
@@ -110,9 +110,9 @@ async def mem_manage():  # Necessary for long term stability
 
 async def display():
     fs = 'Yaw: {:4.0f}\tPitch: {:4.0f}\tRoll: {:4.0f}'
-    mg = 'Magnetometer:\tx: {:4.0f}\ty: {:4.0f}\tz: {:4.0f}'
-    ac = 'Accelerometer:\tx: {:4.0f}\ty: {:4.0f}\tz: {:4.0f}'
-    gy = 'Gyroscope:\tx: {:4.0f}\ty: {:4.0f}\tz: {:4.0f}'
+    mg = 'Magnetometer:\t\tx: {:4.0f}\t\ty: {:4.0f}\t\tz: {:4.0f}'
+    ac = 'Accelerometer:\t\tx: {:4.0f}\t\ty: {:4.0f}\t\tz: {:4.0f}'
+    gy = 'Gyroscope:\t\tx: {:4.0f}\t\ty: {:4.0f}\t\tz: {:4.0f}'
     while True:
         os.system("clear")
         print(fs.format(fuse.heading, fuse.pitch, fuse.roll))
