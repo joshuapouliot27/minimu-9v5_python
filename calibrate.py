@@ -129,14 +129,12 @@ async def test():
     screen.clear()
     screen.addstr(0, 0, "Calibrate the IMU, press sny key when done.")
     screen.nodelay(False)
-    try:
-        calibration = get_calibration()
-        if calibration is None:
-            raise Exception()
-        fuse.set_mag_bias(calibration)
-    except:
+    calibration = get_calibration()
+    if calibration is None:
         await fuse.calibrate(lambda: screen.getch() is not None)
         save_calibration(fuse)
+    else:
+        fuse.set_mag_bias(calibration)
     screen.nodelay(True)
     curses.endwin()
     await fuse.start()
