@@ -50,7 +50,7 @@ console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setFormatter(log_formatter)
 root_logger.addHandler(console_handler)
 
-config_file = "calibration_data.json"
+config_file = "./calibration_data.json"
 octave_script_dir = "./octave_scripts"
 
 imu_data = imu_data_obj(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
@@ -92,7 +92,9 @@ async def save_calibration(fuse):
 
 
 async def get_calibration():
-    if not os.path.isfile(config_file):
+    if os.path.isfile(config_file) is False:
+        print("calibration file not found!")
+        time.sleep(1)
         return None
     with open(config_file, 'r') as file:
         calibration = json.load(file)
