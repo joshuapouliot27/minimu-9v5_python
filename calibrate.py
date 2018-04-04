@@ -1,155 +1,75 @@
-import curses
-import json, logging, os
-import platform
+#!/usr/bin/python
+#   This program is used to calibrate the compass on a BerryIMUv1 or
+#   BerryIMUv2.
+#
+#   Start this program and rotate your BerryIMU in all directions. 
+#   You will see the maximum and minimum values change. 
+#   After about 30secs or when the values are not changing, press Ctrl-C.
+#   The program will printout some text which you then need to add to
+#   berryIMU.py or berryIMU-simple.py
 
-import time, sys, gc
 
-import asyncio
+import sys, signal, os
+import time
+import math
 
-from Fusion_Filter import Fusion
 from LIS3MDL import LIS3MDL
-from LSM6DS33 import LSM6DS33
+import datetime
 
 
-class magnetometer:
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
+def handle_ctrl_c(signal, frame):
+    os.system("clear")
+    print("magXmin = ", magXmin)
+    print("magYmin = ", magYmin)
+    print("magZmin = ", magZmin)
+    print("magXmax = ", magXmax)
+    print("magYmax = ", magYmax)
+    print("magZmax = ", magZmax)
+    sys.exit(130)  # 130 is standard exit code for ctrl-c
 
 
-class gyroscope:
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
+magnetometer = LIS3MDL()
+
+# This will capture exit when using Ctrl-C
+signal.signal(signal.SIGINT, handle_ctrl_c)
+
+a = datetime.datetime.now()
+
+# Preload the variables used to keep track of the minimum and maximum values
+magXmin = 9999999
+magYmin = 9999999
+magZmin = 9999999
+magXmax = -9999999
+magYmax = -9999999
+magZmax = -9999999
+
+while True:
+
+    # Read magnetometer values
+    MAGx = magnetometer.get_magnetometer_data().x
+    MAGy = magnetometer.get_magnetometer_data().y
+    MAGz = magnetometer.get_magnetometer_data().z
+
+    if MAGx > magXmax:
+        magXmax = MAGx
+    if MAGy > magYmax:
+        magYmax = MAGy
+    if MAGz > magZmax:
+        magZmax = MAGz
+
+    if MAGx < magXmin:
+        magXmin = MAGx
+    if MAGy < magYmin:
+        magYmin = MAGy
+    if MAGz < magZmin:
+        magZmin = MAGz
+
+    os.system("clear")
+    print("X: {:8.2} to {:8.2}".format(magXmin, magXmax))
+    print("Y: {:8.2} to {:8.2}".format(magYmin, magYmax))
+    print("Z: {:8.2} to {:8.2}".format(magZmin, magZmax))
 
 
-class accelerometer:
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
 
-
-class imu_data_obj:
-    def __init__(self, magn, gyro, accel):
-        self.magnetometer = magn
-        self.gyroscope = gyro
-        self.accelerometer = accel
-
-
-log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-root_logger = logging.getLogger()
-
-file_handler = logging.FileHandler("log.log")
-file_handler.setFormatter(log_formatter)
-root_logger.addHandler(file_handler)
-
-console_handler = logging.StreamHandler(sys.stdout)
-console_handler.setFormatter(log_formatter)
-root_logger.addHandler(console_handler)
-
-config_file = "./calibration_data.json"
-octave_script_dir = "./octave_scripts"
-
-imu_data = imu_data_obj(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
-lsm6ds33 = LSM6DS33()
-lis3mdl = LIS3MDL()
-poll_rate = 10  # type: int
-display_rate = 5  # type: int
-
-
-def poll_imu():
-    global imu_data
-
-    if lsm6ds33 is not None and lis3mdl is not None:
-        gyro = lsm6ds33.get_gyroscope_data()
-        accel = lsm6ds33.get_accelerometer_data()
-        magn = lis3mdl.get_magnetometer_data()
-        imu_data = imu_data_obj(magnetometer(magn.x, magn.y, magn.z),
-                                gyroscope(gyro.x, gyro.y, gyro.z),
-                                accelerometer(accel.x, accel.y, accel.z))
-
-
-async def read_coro():
-    poll_imu()
-    await asyncio.sleep(1 / poll_rate)
-    return (imu_data.accelerometer.x, imu_data.accelerometer.y, imu_data.accelerometer.z), (
-        imu_data.gyroscope.x, imu_data.gyroscope.y, imu_data.gyroscope.z), (
-               imu_data.magnetometer.x, imu_data.magnetometer.y, imu_data.magnetometer.z)
-
-
-async def save_calibration(fuse):
-    mag_cal = fuse.get_mag_bias()
-    calibration = {
-        "x": mag_cal[0],
-        "y": mag_cal[1],
-        "z": mag_cal[2]
-    }
-    with open(config_file, 'w') as file:
-        json.dump(calibration, file)
-
-
-async def get_calibration():
-    with open(config_file, 'r') as file:
-        calibration = json.load(file)
-        mag_cal = (
-            calibration["x"],
-            calibration["y"],
-            calibration["z"]
-        )
-        return mag_cal
-
-
-async def mem_manage():  # Necessary for long term stability
-    while True:
-        await asyncio.sleep(100 / 1000)
-        gc.collect()
-
-
-async def display():
-    fs = '\tYaw: {:10.2f}\tPitch: {:10.2f}\tRoll: {:10.2f}'
-    mg = 'Magnetometer:\tx: {:10.2f}\ty: {:10.2f}\tz: {:10.2f}'
-    ac = 'Accelerometer:\tx: {:10.2f}\ty: {:10.2f}\tz: {:10.2f}'
-    gy = 'Gyroscope:\tx: {:10.2f}\ty: {:10.2f}\tz: {:10.2f}'
-    while True:
-        os.system("clear")
-        print(fs.format(fuse.heading, fuse.pitch, fuse.roll))
-        print(mg.format(imu_data.magnetometer.x, imu_data.magnetometer.y, imu_data.magnetometer.z))
-        print(ac.format(imu_data.accelerometer.x, imu_data.accelerometer.y, imu_data.accelerometer.z))
-        print(gy.format(imu_data.gyroscope.x, imu_data.gyroscope.y, imu_data.gyroscope.z))
-        await asyncio.sleep(1 / display_rate)
-
-
-async def test():
-    screen = curses.initscr()
-    screen.clear()
-    screen.addstr(0, 0, "Calibrate the IMU, press sny key when done.")
-    screen.nodelay(False)
-    if os.path.isfile(config_file) is False:
-        await fuse.calibrate(lambda: screen.getch() is not None)
-        save_calibration(fuse)
-    else:
-        calibration = get_calibration()
-        fuse.set_mag_bias(calibration)
-    screen.nodelay(True)
-    curses.endwin()
-    await fuse.start()
-    loop = asyncio.get_event_loop()
-    loop.create_task(display())
-
-
-fuse = Fusion(read_coro)
-
-
-def testt():
-    print("Starting...")
-    time.sleep(1)
-    loop = asyncio.get_event_loop()
-    loop.create_task(mem_manage())
-    loop.create_task(test())
-    loop.run_forever()
-
-
-testt()
+    # slow program down a bit, makes the output more readable
+    time.sleep(1/10)
