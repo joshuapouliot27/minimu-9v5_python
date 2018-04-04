@@ -92,10 +92,6 @@ async def save_calibration(fuse):
 
 
 async def get_calibration():
-    if os.path.isfile(config_file) is False:
-        print("calibration file not found!")
-        time.sleep(1)
-        return None
     with open(config_file, 'r') as file:
         calibration = json.load(file)
         mag_cal = (
@@ -131,11 +127,11 @@ async def test():
     screen.clear()
     screen.addstr(0, 0, "Calibrate the IMU, press sny key when done.")
     screen.nodelay(False)
-    calibration = get_calibration()
-    if calibration is None:
+    if os.path.isfile(config_file) is False:
         await fuse.calibrate(lambda: screen.getch() is not None)
         save_calibration(fuse)
     else:
+        calibration = get_calibration()
         fuse.set_mag_bias(calibration)
     screen.nodelay(True)
     curses.endwin()
