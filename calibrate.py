@@ -56,7 +56,8 @@ octave_script_dir = "./octave_scripts"
 imu_data = imu_data_obj(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
 lsm6ds33 = LSM6DS33()
 lis3mdl = LIS3MDL()
-poll_rate = 10  # type: int
+poll_rate = 50  # type: int
+display_rate = 10  # type: int
 
 
 def poll_imu():
@@ -73,10 +74,32 @@ def poll_imu():
 
 async def read_coro():
     poll_imu()
-    await asyncio.sleep(20 / 1000)
+    await asyncio.sleep(1 / poll_rate)
     return (imu_data.accelerometer.x, imu_data.accelerometer.y, imu_data.accelerometer.z), (
         imu_data.gyroscope.x, imu_data.gyroscope.y, imu_data.gyroscope.z), (
                imu_data.magnetometer.x, imu_data.magnetometer.y, imu_data.magnetometer.z)
+
+
+async def save_calibration(fuse):
+    mag_cal = fuse.get_mag_bias()
+    calibration = {
+        "x": mag_cal[0],
+        "y": mag_cal[1],
+        "z": mag_cal[2]
+    }
+    with open(config_file, 'w') as file:
+        json.dump(calibration, file)
+
+
+async def get_calibration():
+    with open(config_file, 'w') as file:
+        calibration = json.load(file)
+        mag_cal = (
+            calibration["x"],
+            calibration["y"],
+            calibration["z"]
+        )
+        return mag_cal
 
 
 async def mem_manage():  # Necessary for long term stability
@@ -86,18 +109,30 @@ async def mem_manage():  # Necessary for long term stability
 
 
 async def display():
-    fs = 'Heading: {:4.0f} Pitch: {:4.0f} Roll: {:4.0f}'
+    fs = 'Yaw: {:4.0f}\tPitch: {:4.0f}\tRoll: {:4.0f}'
+    mg = 'Magnetometer:\tx: {:4.0f}\ty: {:4.0f}\tz: {:4.0f}'
+    ac = 'Accelerometer:\tx: {:4.0f}\ty: {:4.0f}\tz: {:4.0f}'
+    gy = 'Gyroscope:\tx: {:4.0f}\ty: {:4.0f}\tz: {:4.0f}'
     while True:
         os.system("clear")
         print(fs.format(fuse.heading, fuse.pitch, fuse.roll))
-        await asyncio.sleep(500 / 1000)
+        print(mg.format(imu_data.magnetometer.x, imu_data.magnetometer.y, imu_data.magnetometer.z))
+        print(ac.format(imu_data.accelerometer.x, imu_data.accelerometer.y, imu_data.accelerometer.z))
+        print(gy.format(imu_data.gyroscope.x, imu_data.gyroscope.y, imu_data.gyroscope.z))
+        await asyncio.sleep(1 / display_rate)
+
 
 async def test():
     screen = curses.initscr()
     screen.clear()
-    screen.addstr(0,0,"Calibrate the IMU, press sny key when done.")
+    screen.addstr(0, 0, "Calibrate the IMU, press sny key when done.")
     screen.nodelay(False)
-    await fuse.calibrate(lambda: screen.getch() is not None)
+    try:
+        calibration = get_calibration()
+        fuse.set_mag_bias(calibration)
+    except:
+        await fuse.calibrate(lambda: screen.getch() is not None)
+        save_calibration(fuse)
     screen.nodelay(True)
     curses.endwin()
     await fuse.start()

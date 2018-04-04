@@ -11,14 +11,13 @@
 # Ported to Python. Integrator timing adapted for pyboard.
 # See README.md for documentation.
 
-
-import time
 import asyncio
+from datetime import datetime
 from math import sqrt, atan2, asin, degrees, radians
 
 
 def elapsed_micros(start_time):
-    return abs(time.time()*1e6 - start_time)
+    return abs(datetime.now().microsecond - start_time)
 
 
 class Fusion(object):
@@ -50,6 +49,12 @@ class Fusion(object):
                 magmin[x] = min(magmin[x], magxyz[x])
         self.magbias = tuple(map(lambda a, b: (a + b) / 2, magmin, magmax))
 
+    async def get_mag_bias(self):
+        return self.magbias
+
+    async def set_mag_bias(self, mag_bias):
+        self.magbias = mag_bias
+
     async def start(self, slow_platform=False):
         data = await self.read_coro()
         loop = asyncio.get_event_loop()
@@ -64,7 +69,7 @@ class Fusion(object):
             ax, ay, az = accel  # Units G (but later normalised)
             gx, gy, gz = (radians(x) for x in gyro)  # Units deg/s
             if self.start_time is None:
-                self.start_time = time.ticks_us()  # First run
+                self.start_time = datetime.now().microsecond  # First run
             q1, q2, q3, q4 = (self.q[x] for x in range(4))  # short name local variable for readability
             # Auxiliary variables to avoid repeated arithmetic
             _2q1 = 2 * q1
@@ -112,7 +117,7 @@ class Fusion(object):
 
             # Integrate to yield quaternion
             deltat = elapsed_micros(self.start_time) / 1000000
-            self.start_time = time.time()*1e6
+            self.start_time = datetime.now().microsecond
             q1 += qDot1 * deltat
             q2 += qDot2 * deltat
             q3 += qDot3 * deltat
@@ -132,7 +137,7 @@ class Fusion(object):
             ax, ay, az = accel  # Units irrelevant (normalised)
             gx, gy, gz = (radians(x) for x in gyro)  # Units deg/s
             if self.start_time is None:
-                self.start_time = time.time()*1e6  # First run
+                self.start_time = datetime.now().microsecond  # First run
             q1, q2, q3, q4 = (self.q[x] for x in range(4))  # short name local variable for readability
             # Auxiliary variables to avoid repeated arithmetic
             _2q1 = 2 * q1
@@ -225,7 +230,7 @@ class Fusion(object):
 
             # Integrate to yield quaternion
             deltat = elapsed_micros(self.start_time) / 1000000
-            self.start_time = time.time()*1e6
+            self.start_time = datetime.now().microsecond
             q1 += qDot1 * deltat
             q2 += qDot2 * deltat
             q3 += qDot3 * deltat
