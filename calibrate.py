@@ -56,8 +56,8 @@ octave_script_dir = "./octave_scripts"
 imu_data = imu_data_obj(magnetometer(0, 0, 0), gyroscope(0, 0, 0), accelerometer(0, 0, 0))
 lsm6ds33 = LSM6DS33()
 lis3mdl = LIS3MDL()
-poll_rate = 50  # type: int
-display_rate = 10  # type: int
+poll_rate = 10  # type: int
+display_rate = 5  # type: int
 
 
 def poll_imu():
@@ -92,6 +92,8 @@ async def save_calibration(fuse):
 
 
 async def get_calibration():
+    if not os.path.isfile(config_file):
+        return None
     with open(config_file, 'r') as file:
         calibration = json.load(file)
         mag_cal = (
@@ -109,10 +111,10 @@ async def mem_manage():  # Necessary for long term stability
 
 
 async def display():
-    fs = 'Yaw: {:4.0f}\tPitch: {:4.0f}\tRoll: {:4.0f}'
-    mg = 'Magnetometer:\t\tx: {:4.0f}\t\ty: {:4.0f}\t\tz: {:4.0f}'
-    ac = 'Accelerometer:\t\tx: {:4.0f}\t\ty: {:4.0f}\t\tz: {:4.0f}'
-    gy = 'Gyroscope:\t\tx: {:4.0f}\t\ty: {:4.0f}\t\tz: {:4.0f}'
+    fs = '\tYaw: {:10.2f}\tPitch: {:10.2f}\tRoll: {:10.2f}'
+    mg = 'Magnetometer:\tx: {:10.2f}\ty: {:10.2f}\tz: {:10.2f}'
+    ac = 'Accelerometer:\tx: {:10.2f}\ty: {:10.2f}\tz: {:10.2f}'
+    gy = 'Gyroscope:\tx: {:10.2f}\ty: {:10.2f}\tz: {:10.2f}'
     while True:
         os.system("clear")
         print(fs.format(fuse.heading, fuse.pitch, fuse.roll))
@@ -129,6 +131,8 @@ async def test():
     screen.nodelay(False)
     try:
         calibration = get_calibration()
+        if calibration is None:
+            raise Exception()
         fuse.set_mag_bias(calibration)
     except:
         await fuse.calibrate(lambda: screen.getch() is not None)
